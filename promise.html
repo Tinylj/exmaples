@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试下promise</title>
+</head>
+<body>
+<button onclick="function1()"> promise里放一个同步操作 </button>
+<button onclick="function2()"> promise里放一个异步操作 </button>
+<script>
+    //同步
+    function function1(){
+        //生成一个promise
+        let abc = new Promise(function(resolve,reject){
+            // 这里写个同步操作，还是一样会阻塞
+            console.log( "abc-begin" + new Date());
+            let m = 0.2;
+            for(let i=0;i<9000000;i++) {
+                document.createElement("div");
+            }
+            console.log( "abc-middle" + new Date());
+            if (m){
+                resolve(m);
+            } else {
+                reject("我是错误的");
+            }
+        });
+        abc.then(
+            res=>{
+                console.log( "abc-end" + new Date());
+            },
+            err=>{
+
+            });
+        console.log("外侧" + new Date());
+    }
+    function function2() {
+        let abc = new Promise(function(resolve,reject){
+            setTimeout(()=>{
+                resolve();
+            },2000)
+        });
+        abc.then(res=>{
+            console.log("abc" + new Date());
+        });
+        console.log("外侧" + new Date());
+    }
+
+</script>
+</body>
+</html>
